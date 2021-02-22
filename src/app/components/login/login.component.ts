@@ -29,9 +29,7 @@ export class LoginComponent implements OnInit {
         if (!loginData.password) return alert("Introduce your password");
 
         if (this.walletService.encrypted) {
-            /*TO-DO desencriptar semilla */
-
-            loginData.seeds = decrypt.toString(CryptoJS.enc.Utf8);
+            loginData.seeds = this.walletService.decrypt(loginData.password);
         }
 
         if (!Mnemonic.isValid(loginData.seeds)) {
