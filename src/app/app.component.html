@@ -1,0 +1,22 @@
+<nb-layout>
+    <nb-layout-header fixed>
+        CryptoWhatsdApp
+    </nb-layout-header>
+
+    <nb-layout-column *ngIf="walletService.getWallet()">
+        <app-conversation></app-conversation>
+    </nb-layout-column>
+
+    <nb-sidebar *ngIf="walletService.getWallet()">
+        <app-chats></app-chats>
+        <button nbButton type="button" (click)="logout()">Logout</button>
+    </nb-sidebar>
+
+    <nb-layout-column *ngIf="!walletService.getWallet()">
+        <app-login></app-login>
+    </nb-layout-column>
+
+    <nb-layout-footer fixed>
+        <!-- Insert footer here -->
+    </nb-layout-footer>
+</nb-layout>

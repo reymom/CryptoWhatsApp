@@ -1,0 +1,11 @@
+<nb-list>
+    <nb-list-item *ngFor="let contact of contacts" (click)="selectContact(contact)">
+        <nb-user [name]="contact.name" [title]="contact.address"> </nb-user>
+    </nb-list-item>
+</nb-list>
+
+<form [formGroup]="addForm" (ngSubmit)="addContact(addForm.value)">
+    <input nbInput formControlName="name" type="text" placeholder="Name"/>
+    <input nbInput formControlName="address" type="text" placeholder="Address"/>
+    <button nbButton type="submit">Add</button>
+</form>

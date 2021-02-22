@@ -1,0 +1,13 @@
+<nb-card>
+    <nb-card-body>
+        <form [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+            <div *ngIf="!walletService.encrypted">
+                <textarea nbInput formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
+            </div>
+            <div>
+                <input nbInput formControlName="password" type="password" placeholder="Password" />
+            </div>
+            <button nbButton type="submit">Login</button>
+        </form>
+    </nb-card-body>
+</nb-card>
