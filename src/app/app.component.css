@@ -1,0 +1,10 @@
+.right {
+    position: absolute;
+    right: 20px;
+    color: #BEBDBD;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 20px;
+}

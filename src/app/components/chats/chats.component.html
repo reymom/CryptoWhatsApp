@@ -1,11 +1,31 @@
-<nb-list>
-    <nb-list-item *ngFor="let contact of contacts" (click)="selectContact(contact)">
-        <nb-user [name]="contact.name" [title]="contact.address"> </nb-user>
-    </nb-list-item>
-</nb-list>
-
-<form [formGroup]="addForm" (ngSubmit)="addContact(addForm.value)">
-    <input nbInput formControlName="name" type="text" placeholder="Name"/>
-    <input nbInput formControlName="address" type="text" placeholder="Address"/>
-    <button nbButton type="submit">Add</button>
-</form>
+<nb-card size="small">
+    <nb-list>
+        <nb-list-item *ngFor="let contact of messagesService.contacts" (click)="selectContact(contact)">
+            <nb-user 
+                [name]="contact.name" 
+                [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
+                [badgeText]="contact.length" 
+                [badgeStatus]="success">
+            </nb-user>
+        </nb-list-item>
+    </nb-list>
+</nb-card>
+<span [ngClass]='margins'>
+    <form [formGroup]="addForm" (ngSubmit)="addContact(addForm.value)">
+        <input nbInput fullWidth formControlName="name" type="text" placeholder="Name"/>
+        <input nbInput fullWidth formControlName="address" type="text" placeholder="Address"/>
+        <button nbButton type="submit">Add</button>
+    </form>
+</span>
+<nb-card *ngIf="messagesService.addresses.length > 0">
+    <span [ngClass]='margins'>You have messages with:</span>
+    <nb-list>
+        <nb-list-item *ngFor="let address of messagesService.addresses; index as i">
+            <nb-user
+                [name]="address"
+                [badgeText]="messagesService.lengths[i]"
+                [badgeStatus]="danger">
+            </nb-user>
+        </nb-list-item>
+    </nb-list>
+</nb-card>

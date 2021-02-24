@@ -1,4 +1,13 @@
-<nb-chat title="Conversation with {{ messagesService.contact.name }}">
+<nb-chat *ngIf=!messagesService.messages title="Demo Boot" status="success">
+    <nb-chat-message 
+        *ngFor="let msg of initialMessages"
+        [message]="msg.message"
+        [reply]="msg.reply"
+        [sender]="msg.sender"
+        [date]="msg.date">
+    </nb-chat-message>
+</nb-chat>
+<nb-chat *ngIf=messagesService.messages title="{{ messagesService.contact.name }}" status="warning">
     <nb-chat-message 
         *ngFor="let msg of messagesService.messages" 
         [message]="msg.text" 
@@ -6,5 +15,6 @@
         [sender]="msg.user.name"
         [date]="msg.timestamp">
     </nb-chat-message>
-    <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true"> </nb-chat-form>
+    <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true">
+    </nb-chat-form>
 </nb-chat>

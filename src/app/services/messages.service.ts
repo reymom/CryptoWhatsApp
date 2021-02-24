@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Transaction } from "ethereumjs-tx";
 import { NodeService } from "./node.service";
 import { WalletService } from "./wallet.service";
 
@@ -11,56 +10,87 @@ export class MessagesService {
         name: "...",
         address: ""
     };
-
-    conversations;
-
     messages;
-
     address;
+
+    contacts: { name: string; address: string; length: number }[];
+    addresses = [];
+    lengths = [];
 
     constructor(
         private nodeService: NodeService,
         public walletService: WalletService
     ) {
         this.address = this.walletService.getAddress();
+        this.contacts = JSON.parse(window.localStorage.getItem("contacts")) || [];
+        this.getConversationsWith(this.address);
+
+        console.log('addresses = ', this.addresses);
+        console.log('numMessages = ', this.lengths);
     }
 
-    async getConversations() {
-        var getConversationIds = this.nodeService.ChatContract.methods.getUserConvIds(this.address);
+    async getConversationsWith(address) {
+        console.log('getConversationsWith(address)');
+        var getConversationIds = this.nodeService.ChatContract.methods.getUserConvIds(address);
         var conversationIds = await getConversationIds.call();
-        console.log('conversation ids = ', conversationIds);
+        console.log('conversationIds = ', conversationIds);
 
-        var contacts = []
-        for (let id in conversationIds) {
-
-            contacts.push({ address: 'string' })
-        }
-        window.localStorage.setItem("contacts", JSON.stringify(contacts));
+        conversationIds.forEach( async id => {
+            if (id != '0') {
+                var getAddressConversation = this.nodeService.ChatContract.methods.getAddressesConv(id);
+                var addressConversation = await getAddressConversation.call();                
+                var userAddress;
+                if (addressConversation[0] == this.address) {
+                    userAddress = addressConversation[0];
+                } else {
+                    userAddress = addressConversation[1];
+                }
+                var existent = false;
+                this.contacts.forEach( contact => {
+                    if (contact.address == userAddress) {
+                        existent = true;
+                    }
+                });
+                if (!existent) {
+                    this.addresses.push(userAddress);
+                    this.getNumMessagesConversation(userAddress).then(res => {
+                        this.lengths.push(res);
+                    });
+                }
+            }
+        })
     }
 
     async selectContact(contact) {
         this.contact = contact;
-        console.log("my address = " + this.address);
-        console.log("contact address = " + this.contact.address);
         this.messages = [];
 
         var getConversationId = this.nodeService.ChatContract.methods.getConvId(this.address, this.contact.address);
         var conversationId = await getConversationId.call();
-        console.log('conversationID = ', conversationId);
-        if (conversationId) {
+        if (conversationId != 0) {
             try {
                 var getMessageIds = this.nodeService.ChatContract.methods.getConvMessageIds(conversationId);
                 var messageIds = await getMessageIds.call();
                 for (let messageId in messageIds) {
                     var getMessageInfo = this.nodeService.ChatContract.methods.getMessageInfo(messageId);
                     var messageInfo = await getMessageInfo.call();
-                    console.log('messageInfo = ', messageInfo);
+
+                    console.log('messageInfo[0] = ', messageInfo[0]);
+                    console.log('this.address = ', this.address);
+                    if (messageInfo[0].toUpperCase() == this.address.toUpperCase()) {
+                        var userName = 'You';
+                        var reply = true;
+                    } else {
+                        var userName = this.contact.name;
+                        var reply = false;
+                    }
+                    console.log('userName = ', userName, 'reply = ', reply)
                     var message = {
                         text: messageInfo[2],
                         user: {
-                            name: this.contact.name
+                            name: userName
                         },
-                        reply: true,
+                        reply: reply,
                         timestamp: new Date(parseInt(messageInfo[3]) * 1000)
                     }
                     this.messages.push(message);
@@ -70,15 +100,15 @@ export class MessagesService {
             }
         }
         console.log('messages = ', this.messages);
-
     }
 
-    getContact() {
-        return this.contact;
-    }
-
-    async lastIdMessageFromTo(address) {
-        /*TO-DO recuperar cantidad de mensajes de la conversación*/
+    async getNumMessagesConversation(userAddress) {
+        var getConversationId = this.nodeService.ChatContract.methods.getConvId(this.address, userAddress);
+        var conversationID = await getConversationId.call();
+        var getConversationLength = this.nodeService.ChatContract.methods.getConvLength(conversationID);
+        var conversationLength = await getConversationLength.call();
+        console.log('conversationLength = ', conversationLength);
+        return conversationLength;
     }
 
     async readMessage(address, count) {

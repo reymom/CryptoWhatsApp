@@ -1,6 +1,6 @@
 <nb-layout>
     <nb-layout-header fixed>
-        CryptoWhatsApp
+        CryptoWhatsApp <span [ngClass]="'right'">{{walletService.address}}</span>
     </nb-layout-header>
 
     <nb-layout-column *ngIf="walletService.getWallet()">
@@ -9,7 +9,7 @@
 
     <nb-sidebar *ngIf="walletService.getWallet()">
         <app-chats></app-chats>
-        <button nbButton type="button" (click)="logout()">Logout</button>
+        <button nbButton [ngClass]="'bottom'" type="button" (click)="logout()">Logout</button>
     </nb-sidebar>
 
     <nb-layout-column *ngIf="!walletService.getWallet()">

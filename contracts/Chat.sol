@@ -35,8 +35,6 @@ contract Chat {
     mapping(address => mapping(address => bool)) public haveConversation;
     mapping(address => mapping(address => uint)) public conversationId;
 
-    uint[] emptyArrayPointer;
-
     constructor () {}
 
     function sendNewMessage(string memory _message, address _to) public returns (bool) {
@@ -54,7 +52,7 @@ contract Chat {
         // links to existent conversation or to a new one
         if (haveConversation[msg.sender][_to]) {
             // add message to existing conversation
-            Conversation storage conversation = conversations[conversationId[msg.sender][_to]];
+            Conversation storage conversation = conversations[conversationId[msg.sender][_to] - 1];
             uint lenMessages = conversation.messageIds.length + 1;
             uint[] memory messIds = new uint[](lenMessages);
             for (uint i = 0; i < lenMessages; i++) {
@@ -79,16 +77,16 @@ contract Chat {
             }
             haveConversation[msg.sender][_to] = true;
             haveConversation[_to][msg.sender] = true;
-            conversationId[msg.sender][_to] = conversations.length;
-            conversationId[_to][msg.sender] = conversations.length;
+            conversationId[msg.sender][_to] = conversations.length + 1;
+            conversationId[_to][msg.sender] = conversations.length + 1;
             uint[] memory messIds = new uint[](1);
             messIds[0] = messageId;
             conversations.push(Conversation({
-                id: conversations.length, messageIds: messIds
+                id: conversations.length + 1, messageIds: messIds
             }));
-            message.conversationId = conversations.length - 1;
-            emit NewConversation(conversations.length - 1);
-            emit NewMessage(conversations.length - 1, msg.sender, _to, _message, timeSent);
+            message.conversationId = conversations.length;
+            emit NewConversation(conversations.length);
+            emit NewMessage(conversations.length, msg.sender, _to, _message, timeSent);
         }
         return true;
     }
@@ -98,11 +96,18 @@ contract Chat {
     }
 
     function getConvLength(uint _conversationId) public view returns (uint) {
-        return conversations[_conversationId].messageIds.length;
+        return conversations[_conversationId - 1].messageIds.length;
+    }
+    
+    function getAddressesConv(uint _conversationId) public view returns (address, address) {
+        return (
+            messages[conversations[_conversationId - 1].messageIds[0]].sender, 
+            messages[conversations[_conversationId - 1].messageIds[0]].receiver
+        );
     }
 
     function getConvMessageIds(uint _conversationId) public view returns (uint[] memory) {
-        return conversations[_conversationId].messageIds;
+        return conversations[_conversationId - 1].messageIds;
     }
 
     function getMessageInfo(uint _messageId) public view returns (address, address, string memory, uint) {
@@ -137,4 +142,3 @@ contract Chat {
         return conversationIds;
     }
 }
-

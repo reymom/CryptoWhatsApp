@@ -25,7 +25,7 @@ export class NodeService {
             )
         );
 
-        this.ChatContractAddress = "0x602475C17C020FE3AF7294eC4aCF68f93198332c";
+        this.ChatContractAddress = "0x90eCb418AAFd4a21010EA0f0d6b2fdf36792050f";
 
         this.ChatContract = new this.web3.eth.Contract(
             ChatContractABI,
@@ -65,9 +65,6 @@ export class NodeService {
                 }, error => {
                     console.log("error = " + error);
                 })
-
         }
     }
-
-
 }

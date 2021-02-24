@@ -10,17 +10,17 @@ import { MessagesService } from "src/app/services/messages.service";
     styleUrls: ["./chats.component.css"]
 })
 export class ChatsComponent implements OnInit {
-    contacts: { name: string; address: string }[];
-
     addForm;
 
-    constructor(private formBuilder: FormBuilder, private messagesService: MessagesService) {
+    constructor(
+        private formBuilder: FormBuilder, 
+        private messagesService: MessagesService
+    ) {
         this.addForm = this.formBuilder.group({
             name: "",
             address: ""
         });
 
-        this.contacts = JSON.parse(window.localStorage.getItem("contacts")) || [];
     }
 
     ngOnInit() { }
@@ -30,13 +30,39 @@ export class ChatsComponent implements OnInit {
             return alert("Please, fill in all the data");
         }
 
+        if (contactData.address == this.messagesService.address) {
+            return alert("You cannot introduce your own address");
+        }
+
         if (!util.isValidAddress(contactData.address)) {
             return alert("Please, introduce a valid address");
         }
 
-        this.contacts.push(contactData);
+        this.messagesService.contacts.forEach( contact => {
+            if (contact.address == contactData.address) {
+                return alert("Contact already registered!");
+            }
+        });
 
-        window.localStorage.setItem("contacts", JSON.stringify(this.contacts));
+        var length = 0;
+        var index = this.messagesService.addresses.indexOf(contactData.address);
+        if (index != -1) {
+            length = this.messagesService.lengths[index];
+        }
+        var contact = {
+            name: contactData.name,
+            address: contactData.address,
+            length: length
+        };
+        this.messagesService.contacts.push(contact);
+
+        window.localStorage.setItem("contacts", JSON.stringify(this.messagesService.contacts));
+
+        var i = this.messagesService.addresses.indexOf(contactData.address);
+        if (i != -1) {
+            this.messagesService.addresses.splice(i, 1);
+            this.messagesService.lengths.splice(i, 1);
+        }
 
         this.addForm.reset();
     }
