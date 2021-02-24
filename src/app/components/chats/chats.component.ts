@@ -10,7 +10,7 @@ import { MessagesService } from "src/app/services/messages.service";
     styleUrls: ["./chats.component.css"]
 })
 export class ChatsComponent implements OnInit {
-    contacts: { name: string; title: string }[];
+    contacts: { name: string; address: string }[];
 
     addForm;
 

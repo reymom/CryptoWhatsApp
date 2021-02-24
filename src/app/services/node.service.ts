@@ -7,67 +7,67 @@ import { ChatContractABI } from "./contract";
 require("regenerator-runtime/runtime");
 
 @Injectable({
-  providedIn: "root"
+    providedIn: "root"
 })
 export class NodeService {
-  web3;
+    web3;
 
-  ChatContract;
+    ChatContract;
 
-  ChatContractAddress;
+    ChatContractAddress;
 
-  transactionOnCourse = false;
+    transactionOnCourse = false;
 
-  constructor(private walletService: WalletService) {
-    this.web3 = new Web3(
-      new Web3.providers.HttpProvider(
-        "https://ropsten.infura.io/v3/d09825f256ae4705a74fdee006040903"
-      )
-    );
+    constructor(private walletService: WalletService) {
+        this.web3 = new Web3(
+            new Web3.providers.HttpProvider(
+                "https://ropsten.infura.io/v3/d09825f256ae4705a74fdee006040903"
+            )
+        );
 
-    this.ChatContractAddress = "/*TO-DO address sc*/";
+        this.ChatContractAddress = "0x602475C17C020FE3AF7294eC4aCF68f93198332c";
 
-    this.ChatContract = new this.web3.eth.Contract(
-      ChatContractABI,
-      this.ChatContractAddress
-    );
-  }
-
-  async sendTransaction(from, to, data, privateKey) {
-    if(  this.transactionOnCourse) {
-      alert ("Please wait for current transaction to finish");
-      return "";
+        this.ChatContract = new this.web3.eth.Contract(
+            ChatContractABI,
+            this.ChatContractAddress
+        );
     }
-    else {
-      var rawData = {
-        from: from,
-        to: to,
-        value: 0,
-        gasPrice: this.web3.utils.toHex(10000000000),
-        gasLimit: this.web3.utils.toHex(1000000),
-        nonce: await this.web3.eth.getTransactionCount(from),
-        data: data
-      };
 
-      var transaction = new Transaction(rawData, { chain: "ropsten" });
+    async sendTransaction(from, to, data, privateKey) {
+        if (this.transactionOnCourse) {
+            alert("Please wait for current transaction to finish");
+            return "";
+        }
+        else {
+            var rawData = {
+                from: from,
+                to: to,
+                value: 0,
+                gasPrice: this.web3.utils.toHex(10000000000),
+                gasLimit: this.web3.utils.toHex(1000000),
+                nonce: await this.web3.eth.getTransactionCount(from),
+                data: data
+            };
 
-      this.transactionOnCourse = true;
-      transaction.sign(privateKey);
+            var transaction = new Transaction(rawData, { chain: "ropsten" });
 
-      var serialized = "0x" + transaction.serialize().toString("hex");
-      await this.web3.eth.sendSignedTransaction(serialized)
-      .on('transactionHash', function(hash){
-        console.log("hash"+hash);
-        })
-      .then(receipt => {
-        console.log(receipt);
-        this.transactionOnCourse = false;
-      }, error => {
-        console.log("error:"+error);
-      })
+            this.transactionOnCourse = true;
+            transaction.sign(privateKey);
 
+            var serialized = "0x" + transaction.serialize().toString("hex");
+            await this.web3.eth.sendSignedTransaction(serialized)
+                .on('transactionHash', function (hash) {
+                    console.log("hash = " + hash);
+                })
+                .then(receipt => {
+                    console.log('receipt = ', receipt);
+                    this.transactionOnCourse = false;
+                }, error => {
+                    console.log("error = " + error);
+                })
+
+        }
     }
-  }
 
-  
+
 }

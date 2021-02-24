@@ -93,6 +93,10 @@ contract Chat {
         return true;
     }
 
+    function getConvId(address _user_a, address _user_b) public view returns (uint) {
+        return conversationId[_user_a][_user_b];
+    }
+
     function getConvLength(uint _conversationId) public view returns (uint) {
         return conversations[_conversationId].messageIds.length;
     }

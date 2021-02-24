@@ -7,7 +7,7 @@ import { WalletService } from "./services/wallet.service";
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-    title = "example05";
+    title = "CryptoWhatsApp";
 
     constructor(public walletService: WalletService) { }
 

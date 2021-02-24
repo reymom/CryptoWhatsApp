@@ -3,7 +3,8 @@
         *ngFor="let msg of messagesService.messages" 
         [message]="msg.text" 
         [reply]="msg.reply"
-        [sender]="msg.user.name">
+        [sender]="msg.user.name"
+        [date]="msg.timestamp">
     </nb-chat-message>
     <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true"> </nb-chat-form>
 </nb-chat>

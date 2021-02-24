@@ -22,7 +22,6 @@ export class WalletService {
 
     wallet;
 
-
     constructor() {
         this.encrypted = window.localStorage.getItem("seeds");
 

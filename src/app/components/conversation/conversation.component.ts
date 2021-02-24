@@ -21,23 +21,23 @@ export class ConversationComponent implements OnInit {
         this.sendForm = this.formBuilder.group({
             message: ""
         });
-
-        console.log(this.messagesService.messages);
     }
 
     ngOnInit() { }
 
     async sendMessage($event) {
-        /* this.messages.push({
-          text: $event.message,
-          user: {
-            name: "Reymon"
-          },
-          reply: true
-        }); */
+        console.log($event.message)
+        this.messagesService.messages.push({
+            text: $event.message,
+            user: {
+                name: "Reymon"
+            },
+            reply: true,
+            timestamp: Date.now()
+        });
 
         if (!$event.message) return;
 
-        /*TO-DO realizar envio a blockchain del mensaje*/
+        this.messagesService.sendMessageTo(this.messagesService.contact.address, $event.message);
     }
 }

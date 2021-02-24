@@ -1,55 +1,101 @@
 import { Injectable } from "@angular/core";
+import { Transaction } from "ethereumjs-tx";
 import { NodeService } from "./node.service";
 import { WalletService } from "./wallet.service";
 
 @Injectable({
-  providedIn: "root"
+    providedIn: "root"
 })
 export class MessagesService {
-  contact = {
-    name: "...",
-    address: ""
-  };
+    contact = {
+        name: "...",
+        address: ""
+    };
 
-  messages;
+    conversations;
 
-  address;
+    messages;
 
-  constructor(private nodeService: NodeService, public walletService: WalletService) {
-    this.address = this.walletService.getAddress();
-  }
+    address;
 
-  selectContact(contact) {
-    this.contact = contact;
-    console.log("me:"+this.address );
-    console.log("contact"+this.contact.address);
-    this.messages = [];
+    constructor(
+        private nodeService: NodeService,
+        public walletService: WalletService
+    ) {
+        this.address = this.walletService.getAddress();
+    }
 
-      /*TO-DO cargar conversación con contacto*/
-  }
+    async getConversations() {
+        var getConversationIds = this.nodeService.ChatContract.methods.getUserConvIds(this.address);
+        var conversationIds = await getConversationIds.call();
+        console.log('conversation ids = ', conversationIds);
 
-  getContact() {
-    return this.contact;
-  }
+        var contacts = []
+        for (let id in conversationIds) {
 
-  async lastIdMessageFromTo(address) {
-    /*TO-DO recuperar cantidad de mensajes de la conversación*/
-  }
+            contacts.push({ address: 'string' })
+        }
+        window.localStorage.setItem("contacts", JSON.stringify(contacts));
+    }
 
+    async selectContact(contact) {
+        this.contact = contact;
+        console.log("my address = " + this.address);
+        console.log("contact address = " + this.contact.address);
+        this.messages = [];
 
+        var getConversationId = this.nodeService.ChatContract.methods.getConvId(this.address, this.contact.address);
+        var conversationId = await getConversationId.call();
+        console.log('conversationID = ', conversationId);
+        if (conversationId) {
+            try {
+                var getMessageIds = this.nodeService.ChatContract.methods.getConvMessageIds(conversationId);
+                var messageIds = await getMessageIds.call();
+                for (let messageId in messageIds) {
+                    var getMessageInfo = this.nodeService.ChatContract.methods.getMessageInfo(messageId);
+                    var messageInfo = await getMessageInfo.call();
+                    console.log('messageInfo = ', messageInfo);
+                    var message = {
+                        text: messageInfo[2],
+                        user: {
+                            name: this.contact.name
+                        },
+                        reply: true,
+                        timestamp: new Date(parseInt(messageInfo[3]) * 1000)
+                    }
+                    this.messages.push(message);
+                }
+            } catch(error) {
+                console.log('error');
+            }
+        }
+        console.log('messages = ', this.messages);
 
-  async readMessage(address,count) {
-    /*TO-DO leer un mensje individual*/
-  }
+    }
 
-  async readAllMessages(address,count){
-  /*TO-DO recuperar y cargar en pantalla conversación*/
-  }
+    getContact() {
+        return this.contact;
+    }
 
+    async lastIdMessageFromTo(address) {
+        /*TO-DO recuperar cantidad de mensajes de la conversación*/
+    }
 
+    async readMessage(address, count) {
+        /*TO-DO leer un mensje individual*/
+    }
 
+    async readAllMessages(address, count) {
+        /*TO-DO recuperar y cargar en pantalla conversación*/
+    }
 
-  sendMessageTo(address, message) {
-    /*TO-DO  enviar mensaje*/
-  }
+    sendMessageTo(address, message) {
+        var sendMessage = this.nodeService.ChatContract.methods.sendNewMessage(message, address);
+        this.nodeService.sendTransaction(
+            this.address, 
+            this.nodeService.ChatContractAddress,
+            sendMessage.encodeABI(),
+            this.walletService.privateKey
+        )
+    }
 }
