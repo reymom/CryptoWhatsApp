@@ -14,7 +14,7 @@ export class ChatsComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder, 
-        private messagesService: MessagesService
+        public messagesService: MessagesService
     ) {
         this.addForm = this.formBuilder.group({
             name: "",

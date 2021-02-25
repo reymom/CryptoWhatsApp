@@ -13,7 +13,7 @@ export class ConversationComponent implements OnInit {
     initialMessages = [];
 
     constructor(
-        private messagesService: MessagesService, 
+        public messagesService: MessagesService, 
         private formBuilder: FormBuilder, 
     ) {
         this.sendForm = this.formBuilder.group({

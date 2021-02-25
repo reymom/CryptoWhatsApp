@@ -6,7 +6,7 @@
                 [name]="contact.name" 
                 [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
                 [badgeText]="contact.length" 
-                [badgeStatus]="success">
+                badgeStatus="success">
             </nb-user>
         </nb-list-item>
     </nb-list>
@@ -25,7 +25,7 @@
             <nb-user
                 [name]="address"
                 [badgeText]="messagesService.lengths[i]"
-                [badgeStatus]="danger">
+                badgeStatus="danger">
             </nb-user>
         </nb-list-item>
     </nb-list>

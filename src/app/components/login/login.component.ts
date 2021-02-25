@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private nodeService: NodeService,
-        private walletService: WalletService
+        public walletService: WalletService
     ) {
         this.loginForm = this.formBuilder.group({
             seeds: "",
