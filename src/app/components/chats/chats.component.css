@@ -1,5 +1,22 @@
 .margins {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding-left: 8px;
+}
+
+.font {
+    font-family: Open Sans, sans-serif;
+    font-size: .9375rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+}
+
+.bottom {
+    position: relative;
+    bottom: -50px;
+    overflow: scroll;
+}
+
+.colored {
+    background-color: #ececec;
 }

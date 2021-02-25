@@ -30,7 +30,7 @@ export class ChatsComponent implements OnInit {
             return alert("Please, fill in all the data");
         }
 
-        if (contactData.address == this.messagesService.address) {
+        if (contactData.address.toUpperCase() == this.messagesService.address.toUpperCase()) {
             return alert("You cannot introduce your own address");
         }
 
@@ -39,7 +39,7 @@ export class ChatsComponent implements OnInit {
         }
 
         this.messagesService.contacts.forEach( contact => {
-            if (contact.address == contactData.address) {
+            if (contact.address.toUpperCase() == contactData.address.toUpperCase()) {
                 return alert("Contact already registered!");
             }
         });
@@ -48,6 +48,8 @@ export class ChatsComponent implements OnInit {
         var index = this.messagesService.addresses.indexOf(contactData.address);
         if (index != -1) {
             length = this.messagesService.lengths[index];
+            this.messagesService.addresses.splice(index, 1);
+            this.messagesService.lengths.splice(index, 1);
         }
         var contact = {
             name: contactData.name,
@@ -57,12 +59,6 @@ export class ChatsComponent implements OnInit {
         this.messagesService.contacts.push(contact);
 
         window.localStorage.setItem("contacts", JSON.stringify(this.messagesService.contacts));
-
-        var i = this.messagesService.addresses.indexOf(contactData.address);
-        if (i != -1) {
-            this.messagesService.addresses.splice(i, 1);
-            this.messagesService.lengths.splice(i, 1);
-        }
 
         this.addForm.reset();
     }

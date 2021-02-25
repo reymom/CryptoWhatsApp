@@ -1,7 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-
-import { WalletService } from "src/app/services/wallet.service";
-import { NodeService } from "src/app/services/node.service";
 import { MessagesService } from "src/app/services/messages.service";
 import { FormBuilder } from "@angular/forms";
 
@@ -27,11 +24,10 @@ export class ConversationComponent implements OnInit {
         var sender = 'Demo Boot';
         var date = Date.now();
         var messages = [
-            'Hello :)',
-            'Introduce a name and an Ethereum contact address in the sidebar to start talking with somebody through messages in the blockchain',
-            'This runs in the testnet Ropsten',
-            'You can use this address if you want: 0x083d6c8Fd582C8dA8307FE421409EEc82D4b4304',
-            'It has no ether in Mainnet nor in Ropsten so I cannot reply, so you can send it some, but do it in the mainnet xD',
+            'Hello :) \nThis runs in the testnet Ropsten',
+            'You see the addresses with whom you have a conversation initiated in the blockchain above the logout button',
+            'To import them and load the messages just copy the address and introduce a name for it! :D',
+            'Or you can simply initiate a new conversation, for example, with: 0x083d6c8Fd582C8dA8307FE421409EEc82D4b4304',
         ]
         messages.forEach( msg => 
             this.initialMessages.push({
@@ -46,7 +42,8 @@ export class ConversationComponent implements OnInit {
     ngOnInit() { }
 
     async sendMessage($event) {
-        console.log($event.message)
+        if (!$event.message) return;
+        this.messagesService.sendMessageTo(this.messagesService.contact.address, $event.message);
         this.messagesService.messages.push({
             text: $event.message,
             user: {
@@ -55,9 +52,12 @@ export class ConversationComponent implements OnInit {
             reply: true,
             timestamp: Date.now()
         });
-
-        if (!$event.message) return;
-
-        this.messagesService.sendMessageTo(this.messagesService.contact.address, $event.message);
+        this.messagesService.contacts.forEach(contact => {
+            if (contact.address == this.messagesService.contact.address) {
+                var length = Number(contact.length) + 1;
+                contact.length = length;
+            }
+        });
+        window.localStorage.setItem("contacts", JSON.stringify(this.messagesService.contacts));
     }
 }

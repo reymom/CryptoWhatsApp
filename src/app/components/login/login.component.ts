@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { NodeService } from "src/app/services/node.service";
 import { WalletService } from "src/app/services/wallet.service";
 import { FormBuilder } from "@angular/forms";
 
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
+        private nodeService: NodeService,
         private walletService: WalletService
     ) {
         this.loginForm = this.formBuilder.group({
@@ -45,6 +47,6 @@ export class LoginComponent implements OnInit {
 
         this.loginForm.reset();
 
-        this.walletService.initWallet(loginData.seeds);
+        this.walletService.initWallet(loginData.seeds, this.nodeService.web3);
     }
 }

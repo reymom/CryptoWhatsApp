@@ -8,8 +8,8 @@
     </nb-chat-message>
 </nb-chat>
 <nb-chat *ngIf=messagesService.messages title="{{ messagesService.contact.name }}" status="warning">
-    <nb-chat-message 
-        *ngFor="let msg of messagesService.messages" 
+    <nb-chat-message
+        *ngFor="let msg of messagesService.sortMessages(messagesService.messages)" 
         [message]="msg.text" 
         [reply]="msg.reply"
         [sender]="msg.user.name"

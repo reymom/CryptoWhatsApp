@@ -35,7 +35,7 @@ export class NodeService {
 
     async sendTransaction(from, to, data, privateKey) {
         if (this.transactionOnCourse) {
-            alert("Please wait for current transaction to finish");
+            alert("Please wait for current transaction to be integrated to the blockchain");
             return "";
         }
         else {

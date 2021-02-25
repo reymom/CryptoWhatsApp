@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { NodeService } from "./services/node.service";
 import { WalletService } from "./services/wallet.service";
 
 @Component({
@@ -12,6 +13,7 @@ export class AppComponent {
     constructor(public walletService: WalletService) { }
 
     logout() {
-        alert("Are you sure?");
+        this.walletService.address = '';
+        this.walletService.wallet = '';
     }
 }

@@ -1,13 +1,16 @@
 <nb-layout>
-    <nb-layout-header fixed>
-        CryptoWhatsApp <span [ngClass]="'right'">{{walletService.address}}</span>
+    <nb-layout-header fixed [ngClass]="'green font'">
+        CryptoWhatsApp 
+        <span [ngClass]="'right'" *ngIf="walletService.getWallet()">
+            ({{walletService.balance}} ETH) {{walletService.address}}
+        </span>
     </nb-layout-header>
 
     <nb-layout-column *ngIf="walletService.getWallet()">
         <app-conversation></app-conversation>
     </nb-layout-column>
 
-    <nb-sidebar *ngIf="walletService.getWallet()">
+    <nb-sidebar *ngIf="walletService.getWallet()" [ngClass]="'grey'">
         <app-chats></app-chats>
         <button nbButton [ngClass]="'bottom'" type="button" (click)="logout()">Logout</button>
     </nb-sidebar>
@@ -16,7 +19,8 @@
         <app-login></app-login>
     </nb-layout-column>
 
-    <nb-layout-footer fixed>
-        <!-- Insert footer here -->
+    <nb-layout-footer fixed [ngClass]="'green font'">
+        <a href="https://github.com/reymom/CryptoWhatsApp">GitHub code</a>
+        <a [ngClass]="'right'" href="https://reymon.dev/">reymon.dev</a>
     </nb-layout-footer>
 </nb-layout>

@@ -1,7 +1,8 @@
 <nb-card size="small">
     <nb-list>
-        <nb-list-item *ngFor="let contact of messagesService.contacts" (click)="selectContact(contact)">
-            <nb-user 
+        <nb-list-item *ngFor="let contact of messagesService.contacts" (click)="selectContact(contact)" [ngClass]="'colored'">
+            <nb-user
+                color="#cccccc"
                 [name]="contact.name" 
                 [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
                 [badgeText]="contact.length" 
@@ -10,15 +11,15 @@
         </nb-list-item>
     </nb-list>
 </nb-card>
-<span [ngClass]='margins'>
+<div [ngClass]="'margins'">
     <form [formGroup]="addForm" (ngSubmit)="addContact(addForm.value)">
         <input nbInput fullWidth formControlName="name" type="text" placeholder="Name"/>
         <input nbInput fullWidth formControlName="address" type="text" placeholder="Address"/>
         <button nbButton type="submit">Add</button>
     </form>
-</span>
-<nb-card *ngIf="messagesService.addresses.length > 0">
-    <span [ngClass]='margins'>You have messages with:</span>
+</div>
+<nb-card *ngIf="messagesService.addresses.length > 0" [ngClass]="'bottom'">
+    <div [ngClass]="'margins font'">You have messages with:</div>
     <nb-list>
         <nb-list-item *ngFor="let address of messagesService.addresses; index as i">
             <nb-user

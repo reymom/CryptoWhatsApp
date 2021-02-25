@@ -8,3 +8,38 @@
     position: absolute;
     bottom: 20px;
 }
+
+.green {
+    background-color: #cfeacf;
+}
+
+.grey {
+    background-color: #f3f8fd;
+}
+
+.font {
+    font-family: Open Sans, sans-serif;
+    font-size: .9375rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    font-family: Open Sans, sans-serif;
+    font-size: .9375rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    color: black;
+}
+
+a:visited {
+    color: purple;
+}

@@ -12,6 +12,8 @@ import * as CryptoJS from 'crypto-js';
 export class WalletService {
     address;
 
+    balance = 0;
+
     privateKey;
 
     publicKey;
@@ -22,20 +24,19 @@ export class WalletService {
 
     wallet;
 
+    // randomSeed;
+
     constructor() {
         this.encrypted = window.localStorage.getItem("seeds");
 
-        /* var seeds =
-          "frequent antique present skull method memory liberty crouch wrap dice verify joy";
-
-        // 0xe1e63ce0ad1d159c0a9180e2f525d1ed393e1535
-        // 0x33f41757609b06b17fe8e886e703a8efeca42658
-
-        // FAKE
-        // this.initWallet(seeds); */
+        if (!this.encrypted) {
+            var code = new Mnemonic(Mnemonic.Words.ENGLISH);
+            // this.randomSeed = code.toString();
+            console.log('randomSeed = ', code.toString());
+        }
     }
 
-    async initWallet(seeds) {
+    async initWallet(seeds, web3) {
         var mnemonic = new Mnemonic(seeds);
 
         bip39.mnemonicToSeed(mnemonic.toString()).then(async seed => {
@@ -44,8 +45,13 @@ export class WalletService {
             this.privateKey = this.wallet.getPrivateKey();
             this.publicKey = util.privateToPublic(this.privateKey);
             this.address = '0x' + util.pubToAddress(this.publicKey).toString('hex');
-            console.log('my address = ' + this.address);
+            this.balance = await this.getBalance(this.address, web3);
         });
+    }
+
+    async getBalance(address, web3) {
+        console.log('getBalance');
+        return web3.eth.getBalance(address).then(web3.utils.fromWei);
     }
 
     getWallet() {

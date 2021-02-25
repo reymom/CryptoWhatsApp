@@ -1,0 +1,12 @@
+.font {
+    font-family: Open Sans, sans-serif;
+    font-size: .9375rem;
+    font-weight: 600;
+    line-height: 1rem;
+    color: #BEBDBD
+}
+
+.margins {
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
