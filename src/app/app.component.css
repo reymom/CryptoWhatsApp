@@ -1,12 +1,34 @@
-.right {
-    position: absolute;
-    right: 20px;
-    color: #BEBDBD;
+.margin-chat {
+    margin-bottom: 20px;
 }
 
-.bottom {
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
     position: absolute;
-    bottom: 20px;
+    background-color: #ffe6e6;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content div {
+    color: #BEBDBD;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align-last: right;
+  }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    left: auto;
+    right: 0;
+    margin-right:-15px;
 }
 
 .green {
@@ -22,6 +44,12 @@
     font-size: .9375rem;
     font-weight: 600;
     line-height: 1.5rem;
+}
+
+.icon {
+    height: 25px;
+    width: 25px;
+    display: block;
 }
 
 a {
@@ -42,4 +70,59 @@ a:active {
 
 a:visited {
     color: purple;
+}
+
+.justify {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Mobile devices */
+@media screen and (max-width: 600px)  {
+    .small-screen {
+        color: #BEBDBD;
+    }
+    .small-correction {
+        /* margin-top: 5px; */
+        padding-top: 7px;
+    }
+    .large-screen { display: none; }
+    .show-large { display: none }
+    .device {
+        width: 70px;
+    }
+    .device button {
+        margin-left: -5px;
+        margin-right: 5px;
+    }
+    .conversation-mobile { display: none; }
+    .down-margin {
+        margin-top: 40px;
+        padding-top: 40px;
+        margin-bottom: 10px;
+    }
+    .bottom {
+        position: absolute;
+        bottom: 5px;
+        margin-left: -10px;
+    }
+    .btn-large-screen { display: none }
+}
+
+/* Large screens */
+@media screen and (min-width: 600px)  {
+    .small-screen { display: none; }
+    .large-screen { 
+        color: #BEBDBD;
+    }
+    .btn-large-screen {
+        margin-top: 5px;
+        margin-bottom: 20px;
+        text-align-last: center;
+    }
+    .chat-button { display: none; }
+    .down-margin { display: none; }
+    .bottom { display: none; }
 }

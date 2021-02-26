@@ -24,16 +24,23 @@ export class WalletService {
 
     wallet;
 
-    // randomSeed;
+    chatComponent = true;
+    conversationComponent = false;
+
+    walletInfo;
 
     constructor() {
         this.encrypted = window.localStorage.getItem("seeds");
 
         if (!this.encrypted) {
             var code = new Mnemonic(Mnemonic.Words.ENGLISH);
-            // this.randomSeed = code.toString();
             console.log('randomSeed = ', code.toString());
         }
+    }
+
+    showChats() {
+        this.chatComponent = !this.chatComponent;
+        this.conversationComponent = !this.conversationComponent;
     }
 
     async initWallet(seeds, web3) {

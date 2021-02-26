@@ -17,6 +17,37 @@
     overflow: scroll;
 }
 
+.info-contacts {
+    color: #908484;
+    margin: auto;
+}
+
+.hide-user { display: none; }
+
 .colored {
     background-color: #ececec;
+}
+
+@media screen and (max-width: 600px)  {
+    .reduced {
+        width: 50px;
+        margin-left: -10px;
+    }
+    .left-margin {
+        margin-left: -10px;
+    }
+    .hide { display: none; }
+    .active {
+        background-color: #00d68f;
+    }
+}
+
+@media screen and (min-width: 600px)  {
+    .colored:hover {
+        background-color: #d8c0c0;
+        cursor: pointer;
+    }
+    .active {
+        background-color: #00d68f;
+    }
 }

@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { NodeService } from "./services/node.service";
 import { WalletService } from "./services/wallet.service";
 
 @Component({
@@ -10,7 +9,9 @@ import { WalletService } from "./services/wallet.service";
 export class AppComponent {
     title = "CryptoWhatsApp";
 
-    constructor(public walletService: WalletService) { }
+    constructor (
+        public walletService: WalletService, 
+    ) { }
 
     logout() {
         this.walletService.address = '';

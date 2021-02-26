@@ -1,26 +1,55 @@
 <nb-layout>
     <nb-layout-header fixed [ngClass]="'green font'">
-        CryptoWhatsApp 
-        <span [ngClass]="'right'" *ngIf="walletService.getWallet()">
-            ({{walletService.balance}} ETH) {{walletService.address}}
-        </span>
+        <div [ngClass]="'justify'">
+            <span [ngClass]="{'small-correction': walletService.getWallet()}">CryptoWhatsApp</span>
+            <span [ngClass]="'large-screen'" *ngIf="walletService.getWallet()">
+                ({{walletService.balance}} ETH) {{walletService.address}}
+            </span>
+            <button 
+                *ngIf="walletService.getWallet()"
+                outline nbButton [ngClass]="'small-screen'"
+                [nbContextMenu]="walletService.walletInfo">
+                Your wallet
+            </button>
+        </div>
     </nb-layout-header>
 
     <nb-layout-column *ngIf="walletService.getWallet()">
-        <app-conversation></app-conversation>
+        <app-conversation [ngClass]="{'conversation-mobile': walletService.chatComponent}"></app-conversation>
     </nb-layout-column>
 
-    <nb-sidebar *ngIf="walletService.getWallet()" [ngClass]="'grey'">
+    <nb-sidebar *ngIf="walletService.getWallet()" [ngClass]="{'device': walletService.conversationComponent}">
+        <button nbButton status="primary" [ngClass]="'chat-button margin-chat'" (click)="walletService.showChats()">
+            <nb-icon icon="person"></nb-icon>
+        </button>
+        <div [ngClass]="'btn-large-screen'">
+            <button nbButton status="basic" (click)="logout()">
+                <span>Logout</span>
+                <nb-icon icon="close" status="danger"></nb-icon>
+            </button>
+        </div>
         <app-chats></app-chats>
-        <button nbButton [ngClass]="'bottom'" type="button" (click)="logout()">Logout</button>
+        <div [ngClass]="{'down-margin': walletService.chatComponent, 'bottom': walletService.conversationComponent}">
+            <button nbButton status="basic" (click)="logout()">
+                <span [ngClass]="{'show-large': walletService.conversationComponent}">Logout</span>
+                <nb-icon icon="close" status="danger"></nb-icon>
+                <span [ngClass]="{'show-large': walletService.conversationComponent}"></span>
+            </button>
+        </div>
     </nb-sidebar>
 
     <nb-layout-column *ngIf="!walletService.getWallet()">
         <app-login></app-login>
     </nb-layout-column>
 
-    <nb-layout-footer fixed [ngClass]="'green font'">
-        <a href="https://github.com/reymom/CryptoWhatsApp">GitHub code</a>
-        <a [ngClass]="'right'" href="https://reymon.dev/">reymon.dev</a>
+    <nb-layout-footer fixed>
+        <a href="https://github.com/reymom/CryptoWhatsApp"><nb-icon icon="github-outline"></nb-icon></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span *ngIf="walletService.conversationComponent">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+        <a href="https://reymon.dev/">
+            <img src="assets/reymon.png" [ngClass]="'icon'">
+        </a>
     </nb-layout-footer>
 </nb-layout>

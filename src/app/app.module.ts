@@ -13,7 +13,10 @@ import {
   NbInputModule,
   NbCardModule,
   NbListModule,
-  NbUserModule
+  NbUserModule,
+  NbIconModule,
+  NbMenuModule,
+  NbContextMenuModule
 } from "@nebular/theme";
 import { NbEvaIconsModule } from "@nebular/eva-icons";
 import { AppRoutingModule } from "./app-routing.module";
@@ -51,7 +54,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     NbInputModule,
     NbCardModule,
     NbListModule,
-    NbUserModule
+    NbUserModule,
+    NbIconModule,
+    NbContextMenuModule,
+    NbMenuModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

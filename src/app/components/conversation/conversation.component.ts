@@ -24,10 +24,10 @@ export class ConversationComponent implements OnInit {
         var sender = 'Demo Boot';
         var date = Date.now();
         var messages = [
-            'Hello :) \nThis runs in the testnet Ropsten',
-            'You see the addresses with whom you have a conversation initiated in the blockchain above the logout button',
-            'To import them and load the messages just copy the address and introduce a name for it! :D',
-            'Or you can simply initiate a new conversation, for example, with: 0x083d6c8Fd582C8dA8307FE421409EEc82D4b4304',
+            'Hello :) \nThis runs in the Ethereum testnet Ropsten',
+            'In the lateral bar you can see addresses with whom you have already a conversation.',
+            'To add them here and load the messages just copy the address and introduce a name for it! :D',
+            'You can initiate a conversation with me: 0x083d6c8Fd582C8dA8307FE421409EEc82D4b4304',
         ]
         messages.forEach( msg => 
             this.initialMessages.push({

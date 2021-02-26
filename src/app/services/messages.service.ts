@@ -23,23 +23,19 @@ export class MessagesService {
     ) {
         this.address = this.walletService.getAddress();
         this.contacts = JSON.parse(window.localStorage.getItem("contacts")) || [];
-        this.getConversationsWith(this.address);
-
-        console.log('addresses = ', this.addresses);
-        console.log('numMessages = ', this.lengths);
+        if (this.address) {
+            this.getConversationsWith(this.address);
+        }
     }
 
     async getConversationsWith(address) {
-        console.log('getConversationsWith(address)');
         var getConversationIds = this.nodeService.ChatContract.methods.getUserConvIds(address);
         var conversationIds = await getConversationIds.call();
-        console.log('conversationIds = ', conversationIds);
 
         conversationIds.forEach( async id => {
             if (id != '0') {
                 var getAddressesConversation = this.nodeService.ChatContract.methods.getAddressesConv(id);
                 var addressesConversation = await getAddressesConversation.call();    
-                console.log('conversation id = ', id, 'addressesConversation = ', addressesConversation);          
                 if (addressesConversation[0].toUpperCase() == this.address.toUpperCase()) {
                     var userAddress = addressesConversation[1];
                 } else {
@@ -72,7 +68,6 @@ export class MessagesService {
             try {
                 var getMessageIds = this.nodeService.ChatContract.methods.getConvMessageIds(conversationId);
                 var messageIds = await getMessageIds.call();
-                console.log('messageIDS = ', messageIds)
                 messageIds.forEach( async messageId => {
                     var messageInfo = await this.readMessage(messageId);
                     if (messageInfo[0].toUpperCase() == this.address.toUpperCase()) {
@@ -116,10 +111,6 @@ export class MessagesService {
         var messageInfo = await getMessageInfo.call();
         return messageInfo;
     }
-
-    // async readAllMessages(address, count) {
-        /*TO-DO recuperar y cargar en pantalla conversación*/
-    // }
 
     sendMessageTo(address, message) {
         var sendMessage = this.nodeService.ChatContract.methods.sendNewMessage(message, address);

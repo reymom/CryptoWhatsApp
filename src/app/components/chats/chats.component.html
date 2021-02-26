@@ -1,24 +1,43 @@
-<nb-card size="small">
+<nb-card size="tiny" [ngClass]="{'reduced': walletService.conversationComponent}">
     <nb-list>
-        <nb-list-item *ngFor="let contact of messagesService.contacts" (click)="selectContact(contact)" [ngClass]="'colored'">
-            <nb-user
-                color="#cccccc"
-                [name]="contact.name" 
-                [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
-                [badgeText]="contact.length" 
-                badgeStatus="success">
-            </nb-user>
+        <nb-list-item *ngIf="!messagesService.contacts.length" [ngClass]="'info-contacts'">
+            Empty
+        </nb-list-item>
+        <nb-list-item
+            *ngFor="let contact of messagesService.contacts"
+            (click)="selectContact(contact)" 
+            [ngClass]="{'colored': true, 'active': contact.address ===  messagesService.contact.address}">
+            <span [ngClass]="{'hide-user': walletService.conversationComponent}">
+                <nb-user
+                    color=#cccccc
+                    [name]="contact.name" 
+                    [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
+                    [badgeText]="contact.length" 
+                    badgeStatus="success">
+                </nb-user>
+            </span>
+            <span [ngClass]="{'hide-user': walletService.chatComponent, 'left-margin': walletService.conversationComponent}">
+                <nb-user
+                    color=#cccccc
+                    [name]="contact.name" 
+                    [title]="contact.address.substring(0,5) + '...' + contact.address.substring(contact.address.length - 5)" 
+                    [badgeText]="contact.length" 
+                    badgeStatus="success">
+                </nb-user>
+            </span>
         </nb-list-item>
     </nb-list>
 </nb-card>
-<div [ngClass]="'margins'">
+<div [ngClass]="'margins'" [ngClass]="{'hide': walletService.conversationComponent}">
     <form [formGroup]="addForm" (ngSubmit)="addContact(addForm.value)">
         <input nbInput fullWidth formControlName="name" type="text" placeholder="Name"/>
         <input nbInput fullWidth formControlName="address" type="text" placeholder="Address"/>
         <button nbButton type="submit">Add</button>
     </form>
 </div>
-<nb-card *ngIf="messagesService.addresses.length > 0" [ngClass]="'bottom'">
+<nb-card 
+    *ngIf="messagesService.addresses.length > 0" 
+    [ngClass]="{'hide': walletService.conversationComponent, 'bottom': true}">
     <div [ngClass]="'margins font'">You have messages with:</div>
     <nb-list>
         <nb-list-item *ngFor="let address of messagesService.addresses; index as i">

@@ -5,6 +5,7 @@ import { FormBuilder } from "@angular/forms";
 
 import * as Mnemonic from "bitcore-mnemonic";
 import * as CryptoJS from "crypto-js";
+import { MessagesService } from "src/app/services/messages.service";
 
 @Component({
     selector: "app-login",

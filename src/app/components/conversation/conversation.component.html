@@ -1,4 +1,4 @@
-<nb-chat *ngIf=!messagesService.messages title="Demo Boot" status="success">
+<nb-chat *ngIf=!messagesService.messages title="Demo Boot" status="info">
     <nb-chat-message 
         *ngFor="let msg of initialMessages"
         [message]="msg.message"
@@ -7,7 +7,7 @@
         [date]="msg.date">
     </nb-chat-message>
 </nb-chat>
-<nb-chat *ngIf=messagesService.messages title="{{ messagesService.contact.name }}" status="warning">
+<nb-chat *ngIf=messagesService.messages title="{{ messagesService.contact.name }}" status="success">
     <nb-chat-message
         *ngFor="let msg of messagesService.sortMessages(messagesService.messages)" 
         [message]="msg.text" 
