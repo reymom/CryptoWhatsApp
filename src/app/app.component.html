@@ -5,12 +5,18 @@
             <span [ngClass]="'large-screen'" *ngIf="walletService.getWallet()">
                 ({{walletService.balance}} ETH) {{walletService.address}}
             </span>
-            <button 
-                *ngIf="walletService.getWallet()"
-                outline nbButton [ngClass]="'small-screen'"
-                [nbContextMenu]="walletService.walletInfo">
-                Your wallet
-            </button>
+            <div [ngClass]="'dropdown'" [ngClass]="'small-screen'">
+                <button 
+                    nbButton
+                    *ngIf="walletService.getWallet()"
+                    (click)="showWalletInfo()">
+                    Your wallet
+                </button>
+                <div [ngClass]="{'btn-large-screen': !dropDown, 'dropdown-content': true}">
+                    <ul>{{walletService.address}}</ul>
+                    <ul>{{walletService.balance + ' ETH'}}</ul>
+                </div>
+            </div>
         </div>
     </nb-layout-header>
 

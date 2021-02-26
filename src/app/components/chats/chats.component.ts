@@ -23,12 +23,6 @@ export class ChatsComponent implements OnInit {
             name: "",
             address: ""
         });
-
-        this.walletService.walletInfo = [
-            {'title': this.walletService.address},
-            {'title': this.walletService.balance + ' ETH'}
-        ]
-
     }
 
     ngOnInit() { }

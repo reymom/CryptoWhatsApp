@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { WalletService } from "./wallet.service";
 
 import Web3 from "web3";
 import { Transaction } from "ethereumjs-tx";
@@ -18,7 +17,7 @@ export class NodeService {
 
     transactionOnCourse = false;
 
-    constructor(private walletService: WalletService) {
+    constructor() {
         this.web3 = new Web3(
             new Web3.providers.HttpProvider(
                 "https://ropsten.infura.io/v3/d09825f256ae4705a74fdee006040903"

@@ -15,8 +15,6 @@ import {
   NbListModule,
   NbUserModule,
   NbIconModule,
-  NbMenuModule,
-  NbContextMenuModule
 } from "@nebular/theme";
 import { NbEvaIconsModule } from "@nebular/eva-icons";
 import { AppRoutingModule } from "./app-routing.module";
@@ -56,8 +54,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     NbListModule,
     NbUserModule,
     NbIconModule,
-    NbContextMenuModule,
-    NbMenuModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

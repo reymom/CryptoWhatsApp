@@ -6,7 +6,7 @@
 
 .font {
     font-family: Open Sans, sans-serif;
-    font-size: .9375rem;
+    font-size: .7500rem;
     font-weight: 600;
     line-height: 1.5rem;
 }
@@ -20,6 +20,7 @@
 .info-contacts {
     color: #908484;
     margin: auto;
+    scroll-snap-align: center;
 }
 
 .hide-user { display: none; }

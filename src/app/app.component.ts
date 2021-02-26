@@ -9,9 +9,15 @@ import { WalletService } from "./services/wallet.service";
 export class AppComponent {
     title = "CryptoWhatsApp";
 
+    dropDown = false;
+
     constructor (
         public walletService: WalletService, 
     ) { }
+
+    showWalletInfo() {
+        this.dropDown = !this.dropDown;
+    }
 
     logout() {
         this.walletService.address = '';

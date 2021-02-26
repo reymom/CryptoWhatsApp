@@ -27,8 +27,6 @@ export class WalletService {
     chatComponent = true;
     conversationComponent = false;
 
-    walletInfo;
-
     constructor() {
         this.encrypted = window.localStorage.getItem("seeds");
 
@@ -57,7 +55,6 @@ export class WalletService {
     }
 
     async getBalance(address, web3) {
-        console.log('getBalance');
         return web3.eth.getBalance(address).then(web3.utils.fromWei);
     }
 
